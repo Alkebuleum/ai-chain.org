@@ -1,0 +1,1013 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AIChain — The Identity Chain for Humans & AI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #020408;
+    --deep: #050d14;
+    --cyan: #00e5ff;
+    --cyan-dim: rgba(0,229,255,0.15);
+    --cyan-glow: rgba(0,229,255,0.4);
+    --white: #f0f6ff;
+    --muted: rgba(240,246,255,0.45);
+    --border: rgba(0,229,255,0.12);
+    --border-hover: rgba(0,229,255,0.35);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: 'Syne', sans-serif;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* CUSTOM CURSOR */
+  .cursor {
+    position: fixed;
+    width: 8px; height: 8px;
+    background: var(--cyan);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transition: transform 0.1s;
+    mix-blend-mode: screen;
+  }
+  .cursor-ring {
+    position: fixed;
+    width: 32px; height: 32px;
+    border: 1px solid var(--cyan-glow);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9998;
+    transition: transform 0.15s, width 0.2s, height 0.2s, opacity 0.2s;
+    transform: translate(-50%, -50%);
+  }
+
+  /* CANVAS */
+  #canvas {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.4;
+  }
+
+  /* NOISE OVERLAY */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0.6;
+  }
+
+  /* LAYOUT */
+  .wrapper { position: relative; z-index: 2; }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 24px 48px;
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    background: rgba(2,4,8,0.7);
+  }
+
+  .logo {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    color: var(--white);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .logo-mark {
+    width: 28px; height: 28px;
+    border: 1.5px solid var(--cyan);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .logo-mark::before {
+    content: '';
+    position: absolute;
+    width: 10px; height: 10px;
+    background: var(--cyan);
+    border-radius: 2px;
+    animation: pulse-mark 2s ease-in-out infinite;
+  }
+  @keyframes pulse-mark {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.7); }
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 40px;
+    list-style: none;
+  }
+  .nav-links a {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--cyan); }
+
+  .nav-cta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--black);
+    background: var(--cyan);
+    border: none;
+    padding: 10px 20px;
+    cursor: none;
+    font-weight: 500;
+    transition: opacity 0.2s, box-shadow 0.2s;
+  }
+  .nav-cta:hover {
+    opacity: 0.85;
+    box-shadow: 0 0 20px var(--cyan-glow);
+  }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 120px 48px 80px;
+    position: relative;
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    border: 1px solid var(--border-hover);
+    padding: 6px 14px;
+    margin-bottom: 48px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--cyan);
+    opacity: 0;
+    animation: fade-up 0.8s 0.2s forwards;
+  }
+  .badge-dot {
+    width: 5px; height: 5px;
+    background: var(--cyan);
+    border-radius: 50%;
+    animation: blink 1.5s ease-in-out infinite;
+  }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.2} }
+
+  .hero-title {
+    font-size: clamp(56px, 9vw, 130px);
+    font-weight: 800;
+    line-height: 0.92;
+    letter-spacing: -0.03em;
+    margin-bottom: 32px;
+    opacity: 0;
+    animation: fade-up 0.9s 0.4s forwards;
+  }
+  .hero-title .line-1 { display: block; color: var(--white); }
+  .hero-title .line-2 {
+    display: block;
+    color: transparent;
+    -webkit-text-stroke: 1.5px rgba(0,229,255,0.6);
+    position: relative;
+  }
+  .hero-title .line-2::after {
+    content: attr(data-text);
+    position: absolute;
+    left: 0; top: 0;
+    color: var(--cyan);
+    clip-path: polygon(0 0, 30% 0, 30% 100%, 0 100%);
+    animation: scan 4s ease-in-out infinite;
+  }
+  @keyframes scan {
+    0% { clip-path: polygon(0 0, 0% 0, 0% 100%, 0 100%); }
+    50% { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); }
+    100% { clip-path: polygon(0 0, 0% 0, 0% 100%, 0 100%); }
+  }
+
+  .hero-sub {
+    font-size: clamp(15px, 1.8vw, 19px);
+    font-weight: 400;
+    color: var(--muted);
+    max-width: 560px;
+    line-height: 1.7;
+    margin-bottom: 56px;
+    opacity: 0;
+    animation: fade-up 0.9s 0.6s forwards;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    opacity: 0;
+    animation: fade-up 0.9s 0.8s forwards;
+  }
+
+  .btn-primary {
+    background: var(--cyan);
+    color: var(--black);
+    border: none;
+    padding: 16px 36px;
+    font-family: 'Syne', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    cursor: none;
+    position: relative;
+    overflow: hidden;
+    transition: box-shadow 0.3s;
+  }
+  .btn-primary::before {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%;
+    width: 100%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    transition: left 0.4s;
+  }
+  .btn-primary:hover::before { left: 100%; }
+  .btn-primary:hover { box-shadow: 0 0 40px var(--cyan-glow); }
+
+  .btn-ghost {
+    background: transparent;
+    color: var(--white);
+    border: 1px solid var(--border-hover);
+    padding: 15px 36px;
+    font-family: 'Syne', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    cursor: none;
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .btn-ghost:hover { border-color: var(--cyan); color: var(--cyan); }
+
+  /* SCROLL INDICATOR */
+  .scroll-hint {
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    opacity: 0;
+    animation: fade-up 1s 1.4s forwards;
+  }
+  .scroll-hint span {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .scroll-line {
+    width: 1px; height: 48px;
+    background: linear-gradient(to bottom, var(--cyan), transparent);
+    animation: scroll-pulse 2s ease-in-out infinite;
+  }
+  @keyframes scroll-pulse { 0%,100%{opacity:1;transform:scaleY(1)} 50%{opacity:0.3;transform:scaleY(0.6)} }
+
+  /* STATS BAR */
+  .stats-bar {
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    background: rgba(0,229,255,0.02);
+  }
+  .stat-item {
+    padding: 40px 48px;
+    border-right: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+    transition: background 0.3s;
+  }
+  .stat-item:last-child { border-right: none; }
+  .stat-item:hover { background: var(--cyan-dim); }
+  .stat-num {
+    font-size: 42px;
+    font-weight: 800;
+    color: var(--white);
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+  .stat-num span { color: var(--cyan); }
+  .stat-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  /* SECTIONS */
+  section { padding: 120px 48px; }
+
+  .section-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--cyan);
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .section-tag::before {
+    content: '';
+    width: 24px; height: 1px;
+    background: var(--cyan);
+  }
+
+  .section-title {
+    font-size: clamp(36px, 5vw, 64px);
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    margin-bottom: 20px;
+  }
+
+  .section-body {
+    font-size: 17px;
+    color: var(--muted);
+    line-height: 1.75;
+    max-width: 540px;
+  }
+
+  /* WHAT IS */
+  .what-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  /* PILLARS */
+  .pillars { background: var(--deep); }
+  .pillars-inner { max-width: 1200px; margin: 0 auto; }
+  .pillars-header { margin-bottom: 64px; }
+  .pillars-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    background: var(--border);
+  }
+  .pillar-card {
+    background: var(--black);
+    padding: 48px 40px;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.3s;
+  }
+  .pillar-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 2px;
+    background: var(--cyan);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s;
+  }
+  .pillar-card:hover::before { transform: scaleX(1); }
+  .pillar-card:hover { background: rgba(0,229,255,0.03); }
+
+  .pillar-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    color: var(--cyan);
+    margin-bottom: 32px;
+    opacity: 0.6;
+  }
+  .pillar-icon {
+    font-size: 32px;
+    margin-bottom: 20px;
+    display: block;
+  }
+  .pillar-title {
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    letter-spacing: -0.01em;
+  }
+  .pillar-desc {
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+
+  /* ARCHITECTURE */
+  .arch { max-width: 1200px; margin: 0 auto; }
+  .arch-header { margin-bottom: 64px; }
+  .arch-diagram {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .arch-layer {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    align-items: stretch;
+    border: 1px solid var(--border);
+    transition: border-color 0.3s;
+    overflow: hidden;
+  }
+  .arch-layer:hover { border-color: var(--border-hover); }
+  .layer-label {
+    background: var(--deep);
+    padding: 28px 32px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border-right: 1px solid var(--border);
+  }
+  .layer-name {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--cyan);
+    margin-bottom: 4px;
+  }
+  .layer-chain {
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .layer-content {
+    padding: 28px 32px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .layer-chip {
+    background: rgba(0,229,255,0.06);
+    border: 1px solid var(--border);
+    padding: 6px 14px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--white);
+    letter-spacing: 0.05em;
+    transition: background 0.2s, border-color 0.2s;
+  }
+  .layer-chip:hover { background: var(--cyan-dim); border-color: var(--border-hover); }
+  .layer-chip.highlight {
+    background: var(--cyan-dim);
+    border-color: var(--cyan);
+    color: var(--cyan);
+  }
+
+  /* EARLY ACCESS */
+  .early {
+    background: var(--deep);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+  .early-inner {
+    max-width: 640px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  .early-inner .section-tag { justify-content: center; }
+  .early-inner .section-tag::before { display: none; }
+  .early-inner .section-title { margin-bottom: 16px; }
+  .early-inner .section-body { margin: 0 auto 48px; }
+
+  .email-form {
+    display: flex;
+    gap: 0;
+    max-width: 480px;
+    margin: 0 auto 20px;
+  }
+  .email-input {
+    flex: 1;
+    background: rgba(0,229,255,0.04);
+    border: 1px solid var(--border-hover);
+    border-right: none;
+    color: var(--white);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    padding: 14px 20px;
+    outline: none;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .email-input:focus {
+    border-color: var(--cyan);
+    background: var(--cyan-dim);
+  }
+  .email-input::placeholder { color: rgba(240,246,255,0.25); }
+  .email-submit {
+    background: var(--cyan);
+    color: var(--black);
+    border: none;
+    padding: 14px 28px;
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: none;
+    white-space: nowrap;
+    transition: opacity 0.2s;
+  }
+  .email-submit:hover { opacity: 0.85; }
+  .form-note {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+
+  /* FOOTER */
+  footer {
+    padding: 40px 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-top: 1px solid var(--border);
+  }
+  .footer-logo {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.15em;
+    color: var(--muted);
+  }
+  .footer-links {
+    display: flex;
+    gap: 32px;
+    list-style: none;
+  }
+  .footer-links a {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .footer-links a:hover { color: var(--cyan); }
+  .footer-copy {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: rgba(240,246,255,0.2);
+    letter-spacing: 0.1em;
+  }
+
+  /* ANIMATIONS */
+  @keyframes fade-up {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(32px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* GLOW LINES */
+  .glow-line {
+    position: absolute;
+    background: var(--cyan);
+    opacity: 0.04;
+    pointer-events: none;
+  }
+  .glow-line.h { height: 1px; width: 100%; }
+  .glow-line.v { width: 1px; height: 100%; }
+
+  @media (max-width: 900px) {
+    nav { padding: 20px 24px; }
+    .nav-links { display: none; }
+    section { padding: 80px 24px; }
+    .what-grid { grid-template-columns: 1fr; gap: 48px; }
+    .pillars-grid { grid-template-columns: 1fr; }
+    .stats-bar { grid-template-columns: 1fr 1fr; }
+    .stat-item { padding: 32px 24px; }
+    footer { flex-direction: column; gap: 20px; text-align: center; }
+    .arch-layer { grid-template-columns: 1fr; }
+    .layer-label { border-right: none; border-bottom: 1px solid var(--border); }
+    .email-form { flex-direction: column; }
+    .email-input { border-right: 1px solid var(--border-hover); }
+  }
+</style>
+</head>
+<body>
+
+<canvas id="canvas"></canvas>
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<div class="wrapper">
+
+  <!-- NAV -->
+  <nav>
+    <div class="logo">
+      <div class="logo-mark"></div>
+      AI — CHAIN
+    </div>
+    <ul class="nav-links">
+      <li><a href="#what">Protocol</a></li>
+      <li><a href="#pillars">Architecture</a></li>
+      <li><a href="#stack">Stack</a></li>
+      <li><a href="#early">Early Access</a></li>
+    </ul>
+    <button class="nav-cta">Join Waitlist</button>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero" id="home">
+    <div class="glow-line h" style="top: 30%"></div>
+    <div class="glow-line v" style="left: 15%"></div>
+    <div class="glow-line v" style="right: 15%"></div>
+
+    <div class="hero-badge">
+      <span class="badge-dot"></span>
+      Alkebuleum Identity Chain &nbsp;·&nbsp; v1 Coming
+    </div>
+
+    <h1 class="hero-title">
+      <span class="line-1">Identity for</span>
+      <span class="line-2" data-text="Humans & AI">Humans & AI</span>
+    </h1>
+
+    <p class="hero-sub">
+      AIChain is a purpose-built blockchain for sovereign identity — where humans and AI agents share the same verifiable, portable, on-chain foundation.
+    </p>
+
+    <div class="hero-actions">
+      <button class="btn-primary">Join the Waitlist</button>
+      <button class="btn-ghost">Read the Vision</button>
+    </div>
+
+    <div class="scroll-hint">
+      <span>Scroll</span>
+      <div class="scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <div class="stats-bar">
+    <div class="stat-item reveal">
+      <div class="stat-num">01<span>.</span></div>
+      <div class="stat-label">Application-Specific Chain</div>
+    </div>
+    <div class="stat-item reveal" style="transition-delay:0.1s">
+      <div class="stat-num">EVM<span>+</span></div>
+      <div class="stat-label">Compatible & Crosschain</div>
+    </div>
+    <div class="stat-item reveal" style="transition-delay:0.2s">
+      <div class="stat-num">AI<span>∞</span></div>
+      <div class="stat-label">Native Agent Identity</div>
+    </div>
+    <div class="stat-item reveal" style="transition-delay:0.3s">
+      <div class="stat-num">∅<span>→</span></div>
+      <div class="stat-label">Zero Middlemen</div>
+    </div>
+  </div>
+
+  <!-- WHAT IS -->
+  <section id="what">
+    <div class="what-grid">
+      <div class="reveal">
+        <div class="section-tag">The Protocol</div>
+        <h2 class="section-title">Not just another chain.</h2>
+        <p class="section-body">
+          AIChain is carved from a single conviction: identity is the primitive everything else depends on. Before transactions, before storage, before intelligence — there must be verified existence. AIChain makes that possible for both biological and artificial minds.
+        </p>
+        <br>
+        <p class="section-body">
+          Built on the Alkebuleum ecosystem, AIChain is the dedicated identity and storage layer — lean, purposeful, and built from genesis for the era of autonomous AI agents acting in the world.
+        </p>
+      </div>
+      <div class="reveal" style="transition-delay:0.2s">
+        <div style="border: 1px solid var(--border); padding: 40px; position: relative; background: var(--deep);">
+          <div style="position: absolute; top: -1px; left: 40px; right: 40px; height: 2px; background: linear-gradient(to right, transparent, var(--cyan), transparent);"></div>
+          <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.15em; color: var(--cyan); margin-bottom: 24px;">IDENTITY_RECORD.sol</div>
+          <pre style="font-family: 'JetBrains Mono', monospace; font-size: 12px; line-height: 1.8; color: var(--muted);">
+<span style="color:#00e5ff">struct</span> Identity {
+  address  owner;
+  bytes32  did;
+  <span style="color:#00e5ff">bool</span>     isHuman;
+  <span style="color:#00e5ff">bool</span>     isAgent;
+  uint256  credentialRoot;
+  bytes32  storagePointer;
+}
+
+<span style="color:rgba(0,229,255,0.4)">// Humans. AI. One chain.</span>
+<span style="color:rgba(0,229,255,0.4)">// No distinction at protocol level.</span></pre>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PILLARS -->
+  <section class="pillars" id="pillars">
+    <div class="pillars-inner">
+      <div class="pillars-header reveal">
+        <div class="section-tag">Core Pillars</div>
+        <h2 class="section-title">Three layers.<br>One protocol.</h2>
+      </div>
+      <div class="pillars-grid">
+        <div class="pillar-card reveal">
+          <div class="pillar-num">01 /</div>
+          <span class="pillar-icon">⬡</span>
+          <h3 class="pillar-title">Sovereign Identity</h3>
+          <p class="pillar-desc">On-chain DIDs for humans and AI agents alike. Portable across every EVM-compatible chain. No platform can revoke what the protocol grants.</p>
+        </div>
+        <div class="pillar-card reveal" style="transition-delay:0.15s">
+          <div class="pillar-num">02 /</div>
+          <span class="pillar-icon">◈</span>
+          <h3 class="pillar-title">Verifiable Storage</h3>
+          <p class="pillar-desc">Store AI model weights, credentials, documents, and agent memory. Ownership enforced by smart contracts. Cloud-grade capability without central authority.</p>
+        </div>
+        <div class="pillar-card reveal" style="transition-delay:0.3s">
+          <div class="pillar-num">03 /</div>
+          <span class="pillar-icon">⟁</span>
+          <h3 class="pillar-title">Crosschain Intelligence</h3>
+          <p class="pillar-desc">AIChain identities authorize actions across Alkebuleum, Ethereum, and any EVM chain. One identity. Universal access. Native bridge built into the protocol.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ARCHITECTURE STACK -->
+  <section id="stack">
+    <div class="arch">
+      <div class="arch-header reveal">
+        <div class="section-tag">The Stack</div>
+        <h2 class="section-title">Ecosystem architecture.</h2>
+        <p class="section-body">AIChain and Alkebuleum are distinct but deeply connected. Each layer has one job. Together they form a complete decentralized AI-native platform.</p>
+      </div>
+      <div class="arch-diagram">
+        <div class="arch-layer reveal">
+          <div class="layer-label">
+            <div class="layer-name">Application</div>
+            <div class="layer-chain">User Layer</div>
+          </div>
+          <div class="layer-content">
+            <div class="layer-chip highlight">Nuru AI</div>
+            <div class="layer-chip">JollofSwap</div>
+            <div class="layer-chip">dApps</div>
+            <div class="layer-chip">AI Agents</div>
+            <div class="layer-chip">Enterprise Portals</div>
+          </div>
+        </div>
+        <div class="arch-layer reveal" style="transition-delay:0.1s">
+          <div class="layer-label">
+            <div class="layer-name">Identity</div>
+            <div class="layer-chain">AIChain</div>
+          </div>
+          <div class="layer-content">
+            <div class="layer-chip highlight">Human DID</div>
+            <div class="layer-chip highlight">AI Agent DID</div>
+            <div class="layer-chip highlight">Credential Registry</div>
+            <div class="layer-chip highlight">Storage Layer</div>
+            <div class="layer-chip highlight">Model Vault</div>
+          </div>
+        </div>
+        <div class="arch-layer reveal" style="transition-delay:0.2s">
+          <div class="layer-label">
+            <div class="layer-name">Execution</div>
+            <div class="layer-chain">Alkebuleum</div>
+          </div>
+          <div class="layer-content">
+            <div class="layer-chip">EVM Runtime</div>
+            <div class="layer-chip">Smart Contracts</div>
+            <div class="layer-chip">ALKE Token</div>
+            <div class="layer-chip">DEX Liquidity</div>
+            <div class="layer-chip">General dApps</div>
+          </div>
+        </div>
+        <div class="arch-layer reveal" style="transition-delay:0.3s">
+          <div class="layer-label">
+            <div class="layer-name">Wallet</div>
+            <div class="layer-chain">AmVault SDK</div>
+          </div>
+          <div class="layer-content">
+            <div class="layer-chip highlight">AmVault Connect</div>
+            <div class="layer-chip">EIP-1193</div>
+            <div class="layer-chip">Batch Transactions</div>
+            <div class="layer-chip">Message Signing</div>
+            <div class="layer-chip">Crosschain Auth</div>
+          </div>
+        </div>
+        <div class="arch-layer reveal" style="transition-delay:0.4s">
+          <div class="layer-label">
+            <div class="layer-name">Bridge</div>
+            <div class="layer-chain">External Chains</div>
+          </div>
+          <div class="layer-content">
+            <div class="layer-chip">Ethereum</div>
+            <div class="layer-chip">Base</div>
+            <div class="layer-chip">Arbitrum</div>
+            <div class="layer-chip">Polygon</div>
+            <div class="layer-chip">+ EVM Chains</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EARLY ACCESS -->
+  <section class="early" id="early">
+    <div class="early-inner">
+      <div class="section-tag">Early Access</div>
+      <h2 class="section-title">Be first on the identity chain.</h2>
+      <p class="section-body">AIChain v1 testnet is coming. Join the waitlist for early access, builder grants, and genesis identity credentials.</p>
+
+      <div class="email-form">
+        <input class="email-input" type="email" placeholder="your@address.xyz">
+        <button class="email-submit">Request Access</button>
+      </div>
+      <div class="form-note">No spam. Builders only. Sovereignty guaranteed.</div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-logo">AI — CHAIN &nbsp;·&nbsp; ai-chain.org</div>
+    <ul class="footer-links">
+      <li><a href="#">Docs</a></li>
+      <li><a href="#">GitHub</a></li>
+      <li><a href="#">Twitter</a></li>
+      <li><a href="#">Discord</a></li>
+    </ul>
+    <div class="footer-copy">© 2025 Alkebuleum. All rights reserved.</div>
+  </footer>
+
+</div>
+
+<script>
+  // CURSOR
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    cursor.style.left = mx - 4 + 'px';
+    cursor.style.top = my - 4 + 'px';
+  });
+
+  function animateRing() {
+    rx += (mx - rx - 16) * 0.12;
+    ry += (my - ry - 16) * 0.12;
+    ring.style.left = rx + 'px';
+    ring.style.top = ry + 'px';
+    requestAnimationFrame(animateRing);
+  }
+  animateRing();
+
+  document.querySelectorAll('button, a, input').forEach(el => {
+    el.addEventListener('mouseenter', () => {
+      ring.style.width = '48px';
+      ring.style.height = '48px';
+      ring.style.opacity = '0.6';
+    });
+    el.addEventListener('mouseleave', () => {
+      ring.style.width = '32px';
+      ring.style.height = '32px';
+      ring.style.opacity = '1';
+    });
+  });
+
+  // PARTICLE CANVAS
+  const canvas = document.getElementById('canvas');
+  const ctx = canvas.getContext('2d');
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+
+  window.addEventListener('resize', () => {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  });
+
+  const particles = [];
+  const NUM = 80;
+
+  for (let i = 0; i < NUM; i++) {
+    particles.push({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      vx: (Math.random() - 0.5) * 0.3,
+      vy: (Math.random() - 0.5) * 0.3,
+      r: Math.random() * 1.2 + 0.3,
+      opacity: Math.random() * 0.6 + 0.1,
+    });
+  }
+
+  function drawParticles() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    particles.forEach((p, i) => {
+      p.x += p.vx; p.y += p.vy;
+      if (p.x < 0) p.x = canvas.width;
+      if (p.x > canvas.width) p.x = 0;
+      if (p.y < 0) p.y = canvas.height;
+      if (p.y > canvas.height) p.y = 0;
+
+      // connections
+      particles.forEach((q, j) => {
+        if (j <= i) return;
+        const dx = p.x - q.x, dy = p.y - q.y;
+        const dist = Math.sqrt(dx*dx + dy*dy);
+        if (dist < 120) {
+          ctx.beginPath();
+          ctx.moveTo(p.x, p.y);
+          ctx.lineTo(q.x, q.y);
+          ctx.strokeStyle = `rgba(0,229,255,${0.08 * (1 - dist/120)})`;
+          ctx.lineWidth = 0.5;
+          ctx.stroke();
+        }
+      });
+
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(0,229,255,${p.opacity})`;
+      ctx.fill();
+    });
+    requestAnimationFrame(drawParticles);
+  }
+  drawParticles();
+
+  // SCROLL REVEAL
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  reveals.forEach(r => observer.observe(r));
+
+  // EMAIL FORM
+  document.querySelector('.email-submit').addEventListener('click', () => {
+    const input = document.querySelector('.email-input');
+    if (input.value && input.value.includes('@')) {
+      input.value = '';
+      input.placeholder = '✓ You\'re on the list.';
+      input.style.color = 'var(--cyan)';
+      document.querySelector('.email-submit').textContent = 'Done ✓';
+    }
+  });
+
+  // NAV CTA
+  document.querySelector('.nav-cta').addEventListener('click', () => {
+    document.getElementById('early').scrollIntoView({ behavior: 'smooth' });
+  });
+  document.querySelector('.btn-primary').addEventListener('click', () => {
+    document.getElementById('early').scrollIntoView({ behavior: 'smooth' });
+  });
+</script>
+</body>
+</html>
