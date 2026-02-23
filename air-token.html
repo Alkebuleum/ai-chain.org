@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>AIR Token — Alkebuleum Identity Reputation | AIChain</title>
+<meta name="description" content="AIR is the tri-function token powering AIChain. Gas, governance, and on-chain reputation in one — with a groundbreaking negative balance mechanic for accountable AI and human identity.">
+<meta name="keywords" content="AIR token, Alkebuleum Identity Reputation, AIChain token, AI reputation token, blockchain reputation system, identity token, governance token, AI chain gas token, on-chain reputation">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://ai-chain.org/air-token.html">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://ai-chain.org/air-token.html">
+<meta property="og:title" content="AIR Token — The World's First Reputation-Gas-Governance Token">
+<meta property="og:description" content="AIR powers AIChain. The first token that serves as gas, governance, and on-chain reputation simultaneously — with a negative balance mechanic that makes accountability permanent.">
+<meta property="og:site_name" content="AIChain">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FinancialProduct",
+  "name": "AIR — Alkebuleum Identity Reputation",
+  "description": "AIR is the native tri-function token of AIChain, serving as gas, governance, and on-chain reputation with a novel negative balance accountability mechanic.",
+  "provider": { "@type": "Organization", "name": "AIChain", "url": "https://ai-chain.org" },
+  "url": "https://ai-chain.org/air-token.html"
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500&family=Lora:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --black: #020408;
+    --deep: #050d14;
+    --cyan: #00e5ff;
+    --gold: #ffd166;
+    --gold-dim: rgba(255,209,102,0.12);
+    --gold-glow: rgba(255,209,102,0.35);
+    --red: #ff4757;
+    --red-dim: rgba(255,71,87,0.1);
+    --green: #2ed573;
+    --green-dim: rgba(46,213,115,0.1);
+    --cyan-dim: rgba(0,229,255,0.1);
+    --cyan-glow: rgba(0,229,255,0.35);
+    --white: #f0f6ff;
+    --muted: rgba(240,246,255,0.45);
+    --muted-text: rgba(240,246,255,0.7);
+    --border: rgba(0,229,255,0.12);
+    --border-gold: rgba(255,209,102,0.2);
+    --border-hover: rgba(0,229,255,0.35);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--black); color: var(--white);
+    font-family: 'Syne', sans-serif;
+    overflow-x: hidden; cursor: none;
+  }
+
+  .cursor { position:fixed;width:8px;height:8px;background:var(--gold);border-radius:50%;pointer-events:none;z-index:9999;mix-blend-mode:screen; }
+  .cursor-ring { position:fixed;width:32px;height:32px;border:1px solid var(--gold-glow);border-radius:50%;pointer-events:none;z-index:9998;transition:width 0.2s,height 0.2s,opacity 0.2s; }
+
+  body::before {
+    content:'';position:fixed;inset:0;
+    background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events:none;z-index:1;opacity:0.5;
+  }
+
+  /* NAV */
+  nav {
+    position:fixed;top:0;left:0;right:0;z-index:100;
+    display:flex;align-items:center;justify-content:space-between;
+    padding:24px 48px;backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--border);background:rgba(2,4,8,0.8);
+  }
+  .logo { font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:500;letter-spacing:0.15em;color:var(--white);display:flex;align-items:center;gap:10px;text-decoration:none; }
+  .logo-mark { width:28px;height:28px;border:1.5px solid var(--cyan);border-radius:6px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden; }
+  .logo-mark::before { content:'';position:absolute;width:10px;height:10px;background:var(--cyan);border-radius:2px;animation:pulse-mark 2s ease-in-out infinite; }
+  @keyframes pulse-mark{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.5;transform:scale(0.7)}}
+  .nav-back { font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color 0.2s;display:flex;align-items:center;gap:8px; }
+  .nav-back:hover{color:var(--cyan);}
+  .nav-cta { font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.15em;text-transform:uppercase;color:var(--black);background:var(--gold);border:none;padding:10px 20px;cursor:none;font-weight:500;transition:opacity 0.2s; }
+  .nav-cta:hover{opacity:0.85;}
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: 80px;
+    padding: 140px 80px 80px;
+    max-width: 1400px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 2;
+  }
+
+  .hero-left { }
+  .hero-badge {
+    display:inline-flex;align-items:center;gap:8px;
+    border:1px solid var(--border-gold);padding:6px 14px;margin-bottom:40px;
+    font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.25em;text-transform:uppercase;
+    color:var(--gold);opacity:0;animation:fade-up 0.8s 0.2s forwards;
+  }
+  .badge-dot { width:5px;height:5px;background:var(--gold);border-radius:50%;animation:blink 1.5s ease-in-out infinite; }
+  @keyframes blink{0%,100%{opacity:1}50%{opacity:0.2}}
+
+  .hero-title {
+    font-size:clamp(52px,7vw,96px);font-weight:800;
+    line-height:0.9;letter-spacing:-0.03em;margin-bottom:28px;
+    opacity:0;animation:fade-up 0.9s 0.3s forwards;
+  }
+  .hero-title .t1{display:block;color:var(--gold);}
+  .hero-title .t2{display:block;color:var(--white);font-size:0.55em;font-weight:500;letter-spacing:-0.01em;margin-top:8px;opacity:0.7;}
+
+  .hero-desc {
+    font-family:'Lora',serif;font-size:17px;color:var(--muted-text);
+    line-height:1.8;margin-bottom:40px;
+    opacity:0;animation:fade-up 0.9s 0.5s forwards;
+  }
+
+  .hero-functions {
+    display:flex;gap:12px;flex-wrap:wrap;
+    opacity:0;animation:fade-up 0.9s 0.7s forwards;
+  }
+  .func-tag {
+    border:1px solid var(--border-gold);padding:8px 16px;
+    font-family:'JetBrains Mono',monospace;font-size:11px;
+    letter-spacing:0.15em;text-transform:uppercase;
+    transition:background 0.2s,color 0.2s;
+  }
+  .func-tag.gas{color:var(--cyan);border-color:rgba(0,229,255,0.3);}
+  .func-tag.gov{color:var(--gold);border-color:var(--border-gold);}
+  .func-tag.rep{color:var(--green);border-color:rgba(46,213,115,0.3);}
+  .func-tag:hover{background:rgba(255,255,255,0.04);}
+
+  /* TOKEN VISUAL */
+  .hero-right {
+    display:flex;align-items:center;justify-content:center;
+    opacity:0;animation:fade-up 1s 0.4s forwards;
+  }
+
+  .token-scene {
+    position:relative;width:380px;height:380px;
+    display:flex;align-items:center;justify-content:center;
+  }
+
+  /* Orbital rings */
+  .orbit {
+    position:absolute;border-radius:50%;border:1px solid;
+    animation:spin linear infinite;
+  }
+  .orbit-1 { width:340px;height:340px;border-color:rgba(255,209,102,0.08);animation-duration:20s; }
+  .orbit-2 { width:290px;height:290px;border-color:rgba(255,209,102,0.12);animation-duration:15s;animation-direction:reverse; }
+  .orbit-3 { width:240px;height:240px;border-color:rgba(255,209,102,0.06);animation-duration:25s; }
+  @keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+
+  /* Orbit dots */
+  .orbit-dot {
+    position:absolute;width:6px;height:6px;border-radius:50%;
+    top:-3px;left:50%;transform:translateX(-50%);
+  }
+  .dot-gold{background:var(--gold);}
+  .dot-cyan{background:var(--cyan);}
+  .dot-green{background:var(--green);}
+
+  /* Token coin */
+  .token-coin {
+    position:relative;width:180px;height:180px;
+    display:flex;align-items:center;justify-content:center;
+    z-index:10;
+  }
+  .coin-svg { width:100%;height:100%;animation:float 4s ease-in-out infinite; }
+  @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+
+  /* Glow behind coin */
+  .coin-glow {
+    position:absolute;width:200px;height:200px;
+    background:radial-gradient(circle, rgba(255,209,102,0.2) 0%, transparent 70%);
+    border-radius:50%;animation:glow-pulse 3s ease-in-out infinite;
+  }
+  @keyframes glow-pulse{0%,100%{opacity:0.6;transform:scale(1)}50%{opacity:1;transform:scale(1.15)}}
+
+  /* Corner data points */
+  .data-point {
+    position:absolute;font-family:'JetBrains Mono',monospace;
+    font-size:10px;letter-spacing:0.1em;
+  }
+  .dp-1{top:20px;left:0;color:var(--cyan);opacity:0.7;}
+  .dp-2{top:20px;right:0;color:var(--gold);opacity:0.7;text-align:right;}
+  .dp-3{bottom:20px;left:0;color:var(--green);opacity:0.7;}
+  .dp-4{bottom:20px;right:0;color:var(--red);opacity:0.7;text-align:right;}
+  .dp-label{display:block;font-size:8px;opacity:0.5;margin-bottom:2px;letter-spacing:0.2em;text-transform:uppercase;}
+
+  /* SECTIONS */
+  .page-section { padding:100px 80px;max-width:1400px;margin:0 auto;position:relative;z-index:2; }
+  .full-width-section { padding:100px 80px;position:relative;z-index:2; }
+
+  .section-tag { font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.3em;text-transform:uppercase;color:var(--gold);margin-bottom:20px;display:flex;align-items:center;gap:12px; }
+  .section-tag::before{content:'';width:24px;height:1px;background:var(--gold);}
+  .section-title{font-size:clamp(32px,4.5vw,58px);font-weight:800;line-height:1.05;letter-spacing:-0.02em;margin-bottom:16px;}
+  .section-title span{color:var(--gold);}
+  .section-body{font-size:16px;color:var(--muted);line-height:1.75;max-width:600px;}
+
+  /* TRI-FUNCTION */
+  .tri-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:var(--border);margin-top:64px;}
+  .tri-card{background:var(--black);padding:48px 40px;position:relative;overflow:hidden;transition:background 0.3s;}
+  .tri-card::before{content:'';position:absolute;top:0;left:0;width:100%;height:3px;transform:scaleX(0);transform-origin:left;transition:transform 0.4s;}
+  .tri-card.gas::before{background:var(--cyan);}
+  .tri-card.gov::before{background:var(--gold);}
+  .tri-card.rep::before{background:var(--green);}
+  .tri-card:hover::before{transform:scaleX(1);}
+  .tri-card:hover{background:rgba(255,255,255,0.02);}
+  .tri-num{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.2em;margin-bottom:28px;opacity:0.5;}
+  .tri-num.gas{color:var(--cyan);}
+  .tri-num.gov{color:var(--gold);}
+  .tri-num.rep{color:var(--green);}
+  .tri-icon{font-size:36px;margin-bottom:20px;display:block;}
+  .tri-title{font-size:24px;font-weight:800;margin-bottom:12px;letter-spacing:-0.01em;}
+  .tri-desc{font-size:14px;color:var(--muted);line-height:1.7;margin-bottom:20px;}
+  .tri-detail{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.05em;padding:10px 14px;border:1px solid;line-height:1.6;}
+  .tri-detail.gas{color:var(--cyan);border-color:rgba(0,229,255,0.2);background:var(--cyan-dim);}
+  .tri-detail.gov{color:var(--gold);border-color:rgba(255,209,102,0.2);background:var(--gold-dim);}
+  .tri-detail.rep{color:var(--green);border-color:rgba(46,213,115,0.2);background:var(--green-dim);}
+
+  /* NEGATIVE BALANCE */
+  .neg-section{background:var(--deep);border-top:1px solid var(--border);border-bottom:1px solid var(--border);}
+  .neg-inner{max-width:1400px;margin:0 auto;padding:100px 80px;}
+  .neg-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;margin-top:64px;}
+
+  .balance-visual{position:relative;}
+  .balance-bar-wrap{margin-bottom:40px;}
+  .balance-label{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);margin-bottom:12px;display:flex;justify-content:space-between;}
+  .balance-track{height:40px;background:rgba(255,255,255,0.04);border:1px solid var(--border);position:relative;overflow:hidden;}
+  .balance-fill{height:100%;transition:width 1.5s ease;position:relative;}
+  .balance-fill.positive{background:linear-gradient(to right,var(--green-dim),rgba(46,213,115,0.3));border-right:2px solid var(--green);}
+  .balance-fill.negative{background:linear-gradient(to right,rgba(255,71,87,0.3),var(--red-dim));border-right:2px solid var(--red);margin-left:auto;}
+  .balance-zero{position:absolute;left:50%;top:0;bottom:0;width:1px;background:rgba(255,255,255,0.2);}
+  .balance-zero-label{position:absolute;left:50%;transform:translateX(-50%);top:-20px;font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);letter-spacing:0.1em;}
+
+  .balance-states{display:flex;flex-direction:column;gap:12px;}
+  .balance-state{display:grid;grid-template-columns:100px 1fr;border:1px solid var(--border);overflow:hidden;transition:border-color 0.3s;}
+  .balance-state:hover{border-color:var(--border-hover);}
+  .bs-range{padding:16px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.1em;display:flex;align-items:center;border-right:1px solid var(--border);}
+  .bs-positive{background:var(--green-dim);color:var(--green);}
+  .bs-zero{background:rgba(255,255,255,0.03);color:var(--muted);}
+  .bs-negative{background:var(--red-dim);color:var(--red);}
+  .bs-desc{padding:16px;font-size:13px;color:var(--muted-text);line-height:1.5;}
+
+  .callout-box{border:1px solid var(--border-gold);padding:32px;background:var(--gold-dim);margin-top:40px;}
+  .callout-box p{font-family:'Lora',serif;font-size:16px;color:var(--white);line-height:1.75;font-style:italic;}
+
+  /* TOKENOMICS */
+  .token-metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;background:var(--border);margin-top:64px;}
+  .metric-card{background:var(--black);padding:36px 32px;transition:background 0.3s;}
+  .metric-card:hover{background:var(--gold-dim);}
+  .metric-val{font-size:36px;font-weight:800;color:var(--gold);line-height:1;margin-bottom:8px;}
+  .metric-label{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);}
+  .metric-note{font-size:12px;color:var(--muted);margin-top:8px;line-height:1.5;}
+
+  .distro-grid{display:grid;grid-template-columns:1fr 1fr;gap:2px;background:var(--border);margin-top:40px;}
+  .distro-item{background:var(--black);padding:28px 32px;display:grid;grid-template-columns:1fr auto;align-items:center;gap:16px;transition:background 0.3s;}
+  .distro-item:hover{background:rgba(255,209,102,0.03);}
+  .distro-name{font-size:15px;font-weight:600;margin-bottom:4px;}
+  .distro-desc{font-size:12px;color:var(--muted);}
+  .distro-pct{font-family:'JetBrains Mono',monospace;font-size:24px;font-weight:700;color:var(--gold);white-space:nowrap;}
+
+  /* SLASH TABLE */
+  .slash-table{width:100%;border-collapse:collapse;margin-top:48px;}
+  .slash-table th{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);padding:12px 20px;text-align:left;border-bottom:1px solid var(--border);}
+  .slash-table td{font-size:14px;padding:16px 20px;border-bottom:1px solid rgba(0,229,255,0.05);color:var(--muted-text);vertical-align:top;}
+  .slash-table tr:hover td{background:rgba(255,255,255,0.02);}
+  .slash-table .offense{color:var(--white);font-weight:600;}
+  .slash-table .amount{font-family:'JetBrains Mono',monospace;color:var(--red);}
+  .slash-table .effect{color:var(--muted);}
+
+  /* INVESTOR */
+  .investor-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:var(--border);margin-top:64px;}
+  .inv-card{background:var(--black);padding:40px 36px;transition:background 0.3s;position:relative;overflow:hidden;}
+  .inv-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(to right,transparent,var(--gold),transparent);opacity:0;transition:opacity 0.3s;}
+  .inv-card:hover{background:var(--gold-dim);}
+  .inv-card:hover::after{opacity:1;}
+  .inv-num{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.2em;color:var(--gold);opacity:0.5;margin-bottom:24px;}
+  .inv-title{font-size:20px;font-weight:700;margin-bottom:12px;letter-spacing:-0.01em;}
+  .inv-desc{font-size:14px;color:var(--muted);line-height:1.7;}
+
+  /* CTA */
+  .air-cta{text-align:center;padding:100px 48px;border-top:1px solid var(--border);position:relative;z-index:2;}
+  .air-cta h2{font-size:clamp(32px,5vw,56px);font-weight:800;letter-spacing:-0.02em;margin-bottom:16px;}
+  .air-cta h2 span{color:var(--gold);}
+  .air-cta p{font-size:16px;color:var(--muted);max-width:480px;margin:0 auto 40px;line-height:1.7;}
+  .btn-gold{background:var(--gold);color:var(--black);border:none;padding:16px 40px;font-family:'Syne',sans-serif;font-size:14px;font-weight:700;letter-spacing:0.05em;cursor:none;transition:box-shadow 0.3s,opacity 0.2s;text-decoration:none;display:inline-block;}
+  .btn-gold:hover{box-shadow:0 0 40px var(--gold-glow);opacity:0.9;}
+  .btn-ghost{background:transparent;color:var(--white);border:1px solid var(--border-hover);padding:15px 36px;font-family:'Syne',sans-serif;font-size:14px;font-weight:600;letter-spacing:0.05em;cursor:none;transition:border-color 0.2s,color 0.2s;text-decoration:none;display:inline-block;margin-left:12px;}
+  .btn-ghost:hover{border-color:var(--gold);color:var(--gold);}
+
+  /* FOOTER */
+  footer{padding:40px 48px;display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--border);position:relative;z-index:2;}
+  .footer-logo{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.15em;color:var(--muted);}
+  .footer-links{display:flex;gap:32px;list-style:none;}
+  .footer-links a{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color 0.2s;}
+  .footer-links a:hover{color:var(--gold);}
+  .footer-copy{font-family:'JetBrains Mono',monospace;font-size:10px;color:rgba(240,246,255,0.2);letter-spacing:0.1em;}
+
+  @keyframes fade-up{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+  .reveal{opacity:0;transform:translateY(28px);transition:opacity 0.8s ease,transform 0.8s ease;}
+  .reveal.visible{opacity:1;transform:translateY(0);}
+
+  hr.divider{border:none;border-top:1px solid var(--border);margin:0;}
+
+  @media(max-width:960px){
+    .hero{grid-template-columns:1fr;padding:120px 24px 60px;gap:48px;}
+    .hero-right{order:-1;}
+    .token-scene{width:280px;height:280px;}
+    .coin-svg{width:130px;height:130px;}
+    .tri-grid,.investor-grid{grid-template-columns:1fr;}
+    .neg-grid{grid-template-columns:1fr;gap:48px;}
+    .token-metrics{grid-template-columns:1fr 1fr;}
+    .distro-grid{grid-template-columns:1fr;}
+    .page-section,.full-width-section,.neg-inner{padding:60px 24px;}
+    footer{flex-direction:column;gap:20px;text-align:center;}
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="/" class="logo"><div class="logo-mark"></div>AI — CHAIN</a>
+  <a href="/" class="nav-back">← Back to Home</a>
+  <a href="/#early" class="nav-cta">Join Waitlist</a>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-left">
+    <div class="hero-badge"><span class="badge-dot"></span>Native Token · AIChain Protocol</div>
+    <h1 class="hero-title">
+      <span class="t1">AIR</span>
+      <span class="t2">Alkebuleum Identity Reputation</span>
+    </h1>
+    <p class="hero-desc">
+      The world's first tri-function token. AIR serves simultaneously as gas, governance, and on-chain reputation — with a groundbreaking negative balance mechanic that makes accountability permanent and identity trustworthy.
+    </p>
+    <div class="hero-functions">
+      <div class="func-tag gas">⬡ Gas</div>
+      <div class="func-tag gov">◈ Governance</div>
+      <div class="func-tag rep">⟁ Reputation</div>
+      <div class="func-tag" style="color:var(--muted);border-color:var(--border);">± Negative Balance</div>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <div class="token-scene">
+      <!-- Orbital rings -->
+      <div class="orbit orbit-1"><div class="orbit-dot dot-cyan"></div></div>
+      <div class="orbit orbit-2"><div class="orbit-dot dot-gold"></div></div>
+      <div class="orbit orbit-3"><div class="orbit-dot dot-green"></div></div>
+
+      <!-- Coin glow -->
+      <div class="coin-glow"></div>
+
+      <!-- Token coin SVG -->
+      <div class="token-coin">
+        <svg class="coin-svg" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Outer ring -->
+          <circle cx="100" cy="100" r="96" stroke="#ffd166" stroke-width="1.5" opacity="0.4"/>
+          <!-- Mid ring -->
+          <circle cx="100" cy="100" r="84" stroke="#ffd166" stroke-width="0.5" opacity="0.2"/>
+          <!-- Coin body -->
+          <circle cx="100" cy="100" r="78" fill="url(#coinGrad)"/>
+          <!-- Coin inner detail ring -->
+          <circle cx="100" cy="100" r="68" stroke="#ffd166" stroke-width="0.75" opacity="0.3"/>
+          <!-- Geometric pattern - hexagonal lines -->
+          <path d="M100 32 L138 56 L138 104 L100 128 L62 104 L62 56 Z" stroke="#ffd166" stroke-width="0.75" opacity="0.2" fill="none"/>
+          <!-- Center mark -->
+          <circle cx="100" cy="100" r="28" fill="url(#centerGrad)" opacity="0.9"/>
+          <circle cx="100" cy="100" r="28" stroke="#ffd166" stroke-width="1" opacity="0.5"/>
+          <!-- AIR text -->
+          <text x="100" y="96" font-family="'JetBrains Mono', monospace" font-size="16" font-weight="500" fill="#ffd166" text-anchor="middle" dominant-baseline="middle" letter-spacing="3">AIR</text>
+          <text x="100" y="113" font-family="'JetBrains Mono', monospace" font-size="6" fill="#ffd166" text-anchor="middle" opacity="0.5" letter-spacing="1.5">IDENTITY</text>
+          <!-- Tick marks around outer ring -->
+          <g stroke="#ffd166" stroke-width="1" opacity="0.3">
+            <line x1="100" y1="4" x2="100" y2="14"/>
+            <line x1="100" y1="186" x2="100" y2="196"/>
+            <line x1="4" y1="100" x2="14" y2="100"/>
+            <line x1="186" y1="100" x2="196" y2="100"/>
+            <line x1="32.7" y1="17.7" x2="38.4" y2="27.5"/>
+            <line x1="167.3" y1="17.7" x2="161.6" y2="27.5"/>
+            <line x1="17.7" y1="167.3" x2="27.5" y2="161.6"/>
+            <line x1="182.3" y1="167.3" x2="172.5" y2="161.6"/>
+            <line x1="17.7" y1="32.7" x2="27.5" y2="38.4"/>
+            <line x1="182.3" y1="32.7" x2="172.5" y2="38.4"/>
+            <line x1="32.7" y1="182.3" x2="38.4" y2="172.5"/>
+            <line x1="167.3" y1="182.3" x2="161.6" y2="172.5"/>
+          </g>
+          <defs>
+            <radialGradient id="coinGrad" cx="40%" cy="35%" r="70%">
+              <stop offset="0%" stop-color="#1a1200"/>
+              <stop offset="50%" stop-color="#0d0a02"/>
+              <stop offset="100%" stop-color="#020408"/>
+            </radialGradient>
+            <radialGradient id="centerGrad" cx="40%" cy="35%" r="70%">
+              <stop offset="0%" stop-color="#332200"/>
+              <stop offset="100%" stop-color="#150f00"/>
+            </radialGradient>
+          </defs>
+        </svg>
+      </div>
+
+      <!-- Data points -->
+      <div class="data-point dp-1"><span class="dp-label">Function</span>Gas · Gov · Rep</div>
+      <div class="data-point dp-2"><span class="dp-label">Chain</span>AIChain</div>
+      <div class="data-point dp-3"><span class="dp-label">Standard</span>ERC-20+</div>
+      <div class="data-point dp-4"><span class="dp-label">Balance</span>± Enabled</div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- TRI-FUNCTION -->
+<div class="page-section">
+  <div class="reveal">
+    <div class="section-tag">Core Functions</div>
+    <h2 class="section-title">One token.<br><span>Three powers.</span></h2>
+    <p class="section-body">Most tokens do one thing. AIR does three — and each function reinforces the others, creating a flywheel of demand, accountability, and governance that gets stronger as the ecosystem grows.</p>
+  </div>
+  <div class="tri-grid">
+    <div class="tri-card gas reveal">
+      <div class="tri-num gas">01 / GAS</div>
+      <span class="tri-icon">⬡</span>
+      <h3 class="tri-title">Transaction Fuel</h3>
+      <p class="tri-desc">Every operation on AIChain — registering an identity, issuing a credential, storing data, bridging to another chain — requires AIR. This creates constant, protocol-level demand independent of market speculation.</p>
+      <div class="tri-detail gas">Identity registration · Credential issuance · Storage allocation · Bridge operations · Smart contract execution</div>
+    </div>
+    <div class="tri-card gov reveal" style="transition-delay:0.15s">
+      <div class="tri-num gov">02 / GOVERNANCE</div>
+      <span class="tri-icon">◈</span>
+      <h3 class="tri-title">Protocol Voice</h3>
+      <p class="tri-desc">AIR holders vote on protocol upgrades, slashing parameters, fee structures, and new feature proposals. Crucially, governance weight reflects both balance AND reputation history — bad actors lose their voice.</p>
+      <div class="tri-detail gov">Voting weight = AIR balance × reputation multiplier. Negative AIR = zero governance rights.</div>
+    </div>
+    <div class="tri-card rep reveal" style="transition-delay:0.3s">
+      <div class="tri-num rep">03 / REPUTATION</div>
+      <span class="tri-icon">⟁</span>
+      <h3 class="tri-title">On-Chain Trust</h3>
+      <p class="tri-desc">AIR accrues through verified, honest participation on the network. Your balance isn't just tokens — it's a publicly verifiable record of your behavior as an identity on AIChain, readable by any contract or counterparty across the ecosystem.</p>
+      <div class="tri-detail rep">Reputation score travels with your DID across all bridged chains. Visible to all smart contracts.</div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- NEGATIVE BALANCE -->
+<div class="neg-section">
+  <div class="neg-inner">
+    <div class="reveal">
+      <div class="section-tag">The Breakthrough Mechanic</div>
+      <h2 class="section-title">Reputation with<br><span>real consequences.</span></h2>
+      <p class="section-body">Traditional slashing burns tokens. AIR goes further. You can go negative — and a negative AIR balance is a permanent, on-chain record of bad behavior that follows your identity everywhere.</p>
+    </div>
+    <div class="neg-grid">
+      <div class="reveal" style="transition-delay:0.1s">
+        <div class="balance-states">
+          <div class="balance-state">
+            <div class="bs-range bs-positive">+HIGH</div>
+            <div class="bs-desc">Trusted actor. Full governance rights. Priority in credential verification. Eligible for builder grants and protocol rewards.</div>
+          </div>
+          <div class="balance-state">
+            <div class="bs-range bs-positive">+LOW</div>
+            <div class="bs-desc">Standard participant. Full protocol access. Can vote, transact, and build. Encouraged to stake and earn through honest participation.</div>
+          </div>
+          <div class="balance-state">
+            <div class="bs-range bs-zero">ZERO</div>
+            <div class="bs-desc">Warning state. Can still transact but flagged on-chain. Next offense enters negative territory. Counterparties can see the risk.</div>
+          </div>
+          <div class="balance-state">
+            <div class="bs-range bs-negative">−LOW</div>
+            <div class="bs-desc">Known bad actor. Governance rights suspended. Contracts can gate against this identity. Negative entry visible to all bridged chains.</div>
+          </div>
+          <div class="balance-state">
+            <div class="bs-range bs-negative">−HIGH</div>
+            <div class="bs-desc">Severely compromised identity. Blacklisted from protocol participation until positive balance is restored through verified rehabilitation actions.</div>
+          </div>
+        </div>
+      </div>
+      <div class="reveal" style="transition-delay:0.2s">
+        <div class="callout-box">
+          <p>"Most systems let bad actors start fresh. AIChain doesn't. A negative AIR balance is a scar — permanently attached to your on-chain identity, readable by every contract and counterparty in the ecosystem. You can recover, but you cannot hide."</p>
+        </div>
+        <br>
+        <table class="slash-table">
+          <thead>
+            <tr><th>Offense</th><th>AIR Slash</th><th>Additional Effect</th></tr>
+          </thead>
+          <tbody>
+            <tr><td class="offense">Identity fraud</td><td class="amount">−500 AIR</td><td class="effect">Credential invalidation</td></tr>
+            <tr><td class="offense">False attestation</td><td class="amount">−200 AIR</td><td class="effect">Attestation blacklist</td></tr>
+            <tr><td class="offense">Malicious agent behavior</td><td class="amount">−300 AIR</td><td class="effect">Agent DID suspended</td></tr>
+            <tr><td class="offense">Governance manipulation</td><td class="amount">−150 AIR</td><td class="effect">30-day vote ban</td></tr>
+            <tr><td class="offense">Storage violation</td><td class="amount">−100 AIR</td><td class="effect">Storage access limited</td></tr>
+            <tr><td class="offense">Bridge abuse</td><td class="amount">−250 AIR</td><td class="effect">Bridge access suspended</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- TOKENOMICS -->
+<div class="page-section">
+  <div class="reveal">
+    <div class="section-tag">Tokenomics</div>
+    <h2 class="section-title">Supply designed<br><span>for longevity.</span></h2>
+    <p class="section-body">AIR supply mechanics are built around sustainable protocol economics — not hype cycles. Demand is structural, supply is controlled, and every issuance serves a protocol purpose.</p>
+  </div>
+  <div class="token-metrics">
+    <div class="metric-card reveal">
+      <div class="metric-val">1B</div>
+      <div class="metric-label">Total Supply</div>
+      <div class="metric-note">Fixed cap. No additional minting beyond protocol emissions.</div>
+    </div>
+    <div class="metric-card reveal" style="transition-delay:0.1s">
+      <div class="metric-val">4yr</div>
+      <div class="metric-label">Vesting Period</div>
+      <div class="metric-note">Team and investor tokens on 4-year linear vest with 1-year cliff.</div>
+    </div>
+    <div class="metric-card reveal" style="transition-delay:0.2s">
+      <div class="metric-val">30%</div>
+      <div class="metric-label">Protocol Rewards</div>
+      <div class="metric-note">Emitted over 10 years to reward honest network participation.</div>
+    </div>
+    <div class="metric-card reveal" style="transition-delay:0.3s">
+      <div class="metric-val">5%</div>
+      <div class="metric-label">Slash Reserve</div>
+      <div class="metric-note">Slashed AIR flows to this reserve, used for security bounties.</div>
+    </div>
+  </div>
+  <div class="distro-grid reveal" style="margin-top:2px;">
+    <div class="distro-item">
+      <div><div class="distro-name">Protocol Rewards</div><div class="distro-desc">Emitted to honest participants, validators, and builders over 10 years</div></div>
+      <div class="distro-pct">30%</div>
+    </div>
+    <div class="distro-item">
+      <div><div class="distro-name">Ecosystem & Grants</div><div class="distro-desc">Developer grants, genesis credentials, early builder incentives</div></div>
+      <div class="distro-pct">20%</div>
+    </div>
+    <div class="distro-item">
+      <div><div class="distro-name">Team & Founders</div><div class="distro-desc">4-year vest, 1-year cliff. Fully aligned with long-term protocol success</div></div>
+      <div class="distro-pct">18%</div>
+    </div>
+    <div class="distro-item">
+      <div><div class="distro-name">Investors</div><div class="distro-desc">Strategic partners and early backers. 4-year vest, 1-year cliff</div></div>
+      <div class="distro-pct">15%</div>
+    </div>
+    <div class="distro-item">
+      <div><div class="distro-name">Treasury</div><div class="distro-desc">DAO-governed reserve for protocol development and emergencies</div></div>
+      <div class="distro-pct">12%</div>
+    </div>
+    <div class="distro-item">
+      <div><div class="distro-name">Public Sale & Liquidity</div><div class="distro-desc">Initial DEX liquidity on JollofSwap and public token distribution</div></div>
+      <div class="distro-pct">5%</div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- INVESTOR THESIS -->
+<div class="page-section">
+  <div class="reveal">
+    <div class="section-tag">Investor Thesis</div>
+    <h2 class="section-title">Why AIR<br><span>has value.</span></h2>
+    <p class="section-body">AIR demand is structural, not speculative. Every identity, every agent, every credential, every transaction on AIChain requires AIR. As the ecosystem grows, demand is protocol-enforced.</p>
+  </div>
+  <div class="investor-grid">
+    <div class="inv-card reveal">
+      <div class="inv-num">01 /</div>
+      <h3 class="inv-title">Structural Demand</h3>
+      <p class="inv-desc">Unlike tokens with purely speculative value, AIR has hardcoded utility. You cannot participate in AIChain without it. Every identity registered, every credential issued, every AI agent deployed consumes AIR. Demand scales directly with ecosystem adoption.</p>
+    </div>
+    <div class="inv-card reveal" style="transition-delay:0.15s">
+      <div class="inv-num">02 /</div>
+      <h3 class="inv-title">Novel Mechanic Premium</h3>
+      <p class="inv-desc">The tri-function design — gas + governance + reputation — with negative balance is a genuine first in the industry. First-mover advantage in a design space that will be widely copied creates a durable narrative premium and establishes AIChain as the reference implementation.</p>
+    </div>
+    <div class="inv-card reveal" style="transition-delay:0.3s">
+      <div class="inv-num">03 /</div>
+      <h3 class="inv-title">Expanding Addressable Market</h3>
+      <p class="inv-desc">The market for AI agent infrastructure is projected to reach hundreds of billions. AIChain positions AIR as the identity fuel for every AI agent operating in decentralized systems — a market that doesn't exist yet at scale but is forming rapidly. AIR is infrastructure for what's coming.</p>
+    </div>
+    <div class="inv-card reveal" style="transition-delay:0.1s">
+      <div class="inv-num">04 /</div>
+      <h3 class="inv-title">Crosschain Portability</h3>
+      <p class="inv-desc">AIR reputation travels with a DID across every bridged chain. As AIChain bridges to Ethereum, Base, Arbitrum, and beyond, the network of contracts and applications that read AIR reputation expands — creating demand from outside the AIChain ecosystem itself.</p>
+    </div>
+    <div class="inv-card reveal" style="transition-delay:0.25s">
+      <div class="inv-num">05 /</div>
+      <h3 class="inv-title">Deflationary Pressure</h3>
+      <p class="inv-desc">Slashed AIR flows to the protocol reserve, not back into circulation. Gas fees include a burn component. Combined with a fixed supply cap, increasing protocol usage creates compounding deflationary pressure on circulating supply over time.</p>
+    </div>
+    <div class="inv-card reveal" style="transition-delay:0.4s">
+      <div class="inv-num">06 /</div>
+      <h3 class="inv-title">Ecosystem Moat</h3>
+      <p class="inv-desc">AIR reputation is non-transferable in its earned form. You cannot buy your way to a good reputation — you have to earn it through protocol participation. This creates a genuine moat: established identities with high AIR reputation have something that cannot be replicated by late entrants with capital alone.</p>
+    </div>
+  </div>
+</div>
+
+<!-- CTA -->
+<div class="air-cta reveal">
+  <h2>Get your <span>AIR</span> early.</h2>
+  <p>Genesis participants receive founding AIR allocations and reputation head starts. Join the waitlist before testnet opens.</p>
+  <a href="/#early" class="btn-gold">Join the Waitlist</a>
+  <a href="vision.html" class="btn-ghost">Read the Vision</a>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">AI — CHAIN &nbsp;·&nbsp; AIR Token &nbsp;·&nbsp; ai-chain.org</div>
+  <ul class="footer-links">
+    <li><a href="/">Home</a></li>
+    <li><a href="vision.html">Vision</a></li>
+    <li><a href="#">GitHub</a></li>
+    <li><a href="#">Twitter</a></li>
+  </ul>
+  <div class="footer-copy">© 2025 AIChain — Alkebuleum Identity Chain</div>
+</footer>
+
+<script>
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  let mx=0,my=0,rx=0,ry=0;
+  document.addEventListener('mousemove',e=>{
+    mx=e.clientX;my=e.clientY;
+    cursor.style.left=mx-4+'px';cursor.style.top=my-4+'px';
+  });
+  function animateRing(){
+    rx+=(mx-rx-16)*0.12;ry+=(my-ry-16)*0.12;
+    ring.style.left=rx+'px';ring.style.top=ry+'px';
+    requestAnimationFrame(animateRing);
+  }
+  animateRing();
+  document.querySelectorAll('button,a,input').forEach(el=>{
+    el.addEventListener('mouseenter',()=>{ring.style.width='48px';ring.style.height='48px';ring.style.opacity='0.6';});
+    el.addEventListener('mouseleave',()=>{ring.style.width='32px';ring.style.height='32px';ring.style.opacity='1';});
+  });
+  const observer=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');observer.unobserve(e.target);}});
+  },{threshold:0.1});
+  document.querySelectorAll('.reveal').forEach(r=>observer.observe(r));
+</script>
+</body>
+</html>
