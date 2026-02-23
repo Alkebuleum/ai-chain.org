@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- PRIMARY SEO -->
+<title>The Vision — AIChain: Identity Infrastructure for the Age of AI</title>
+<meta name="description" content="AIChain is purpose-built identity infrastructure for humans and AI agents. Read the vision: why on-chain identity is the foundational primitive for the autonomous AI economy.">
+<meta name="keywords" content="AIChain vision, AI blockchain whitepaper, AI agent identity infrastructure, on-chain AI identity, decentralized AI, blockchain for AI agents, sovereign identity blockchain, Alkebuleum ecosystem, AI agent wallet, human AI identity chain">
+<meta name="author" content="AIChain — Alkebuleum Identity Chain">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://ai-chain.org/vision.html">
+
+<!-- OPEN GRAPH -->
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://ai-chain.org/vision.html">
+<meta property="og:title" content="The Vision — AIChain: Identity Infrastructure for the Age of AI">
+<meta property="og:description" content="Why on-chain identity is the foundational primitive for the autonomous AI economy — and how AIChain solves it.">
+<meta property="og:image" content="https://ai-chain.org/og-image.png">
+<meta property="og:site_name" content="AIChain">
+
+<!-- TWITTER -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="The Vision — AIChain: Identity for Humans & AI">
+<meta name="twitter:description" content="Why on-chain identity is the foundational primitive for the autonomous AI economy.">
+<meta name="twitter:image" content="https://ai-chain.org/og-image.png">
+
+<!-- SCHEMA -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "AIChain: Identity Infrastructure for the Age of AI",
+  "description": "The vision document for AIChain — a purpose-built blockchain providing sovereign identity for both humans and AI agents.",
+  "author": { "@type": "Organization", "name": "AIChain" },
+  "publisher": { "@type": "Organization", "name": "AIChain", "url": "https://ai-chain.org" },
+  "url": "https://ai-chain.org/vision.html",
+  "keywords": "AI blockchain, AI agent identity, on-chain identity, decentralized AI, sovereign identity, Alkebuleum"
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --black: #020408;
+    --deep: #050d14;
+    --cyan: #00e5ff;
+    --cyan-dim: rgba(0,229,255,0.1);
+    --cyan-glow: rgba(0,229,255,0.4);
+    --white: #f0f6ff;
+    --muted: rgba(240,246,255,0.5);
+    --muted-text: rgba(240,246,255,0.7);
+    --border: rgba(0,229,255,0.12);
+    --border-hover: rgba(0,229,255,0.35);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--black); color: var(--white);
+    font-family: 'Syne', sans-serif;
+    overflow-x: hidden; cursor: none;
+  }
+  .cursor { position:fixed;width:8px;height:8px;background:var(--cyan);border-radius:50%;pointer-events:none;z-index:9999;mix-blend-mode:screen; }
+  .cursor-ring { position:fixed;width:32px;height:32px;border:1px solid var(--cyan-glow);border-radius:50%;pointer-events:none;z-index:9998;transition:width 0.2s,height 0.2s,opacity 0.2s; }
+
+  body::before {
+    content:'';position:fixed;inset:0;
+    background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events:none;z-index:1;opacity:0.5;
+  }
+
+  /* NAV */
+  nav {
+    position:fixed;top:0;left:0;right:0;z-index:100;
+    display:flex;align-items:center;justify-content:space-between;
+    padding:24px 48px;backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--border);background:rgba(2,4,8,0.8);
+  }
+  .logo {
+    font-family:'JetBrains Mono',monospace;font-size:14px;
+    font-weight:500;letter-spacing:0.15em;color:var(--white);
+    display:flex;align-items:center;gap:10px;text-decoration:none;
+  }
+  .logo-mark {
+    width:28px;height:28px;border:1.5px solid var(--cyan);
+    border-radius:6px;display:flex;align-items:center;justify-content:center;
+    position:relative;overflow:hidden;
+  }
+  .logo-mark::before {
+    content:'';position:absolute;width:10px;height:10px;
+    background:var(--cyan);border-radius:2px;
+    animation:pulse-mark 2s ease-in-out infinite;
+  }
+  @keyframes pulse-mark{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.5;transform:scale(0.7)}}
+  .nav-back {
+    font-family:'JetBrains Mono',monospace;font-size:11px;
+    letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);
+    text-decoration:none;transition:color 0.2s;display:flex;align-items:center;gap:8px;
+  }
+  .nav-back:hover{color:var(--cyan);}
+  .nav-cta {
+    font-family:'JetBrains Mono',monospace;font-size:11px;
+    letter-spacing:0.15em;text-transform:uppercase;color:var(--black);
+    background:var(--cyan);border:none;padding:10px 20px;cursor:none;
+    font-weight:500;transition:opacity 0.2s;
+  }
+  .nav-cta:hover{opacity:0.85;}
+
+  /* HERO */
+  .vision-hero {
+    padding: 160px 48px 80px;
+    max-width: 900px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 2;
+  }
+  .vision-tag {
+    font-family:'JetBrains Mono',monospace;font-size:10px;
+    letter-spacing:0.3em;text-transform:uppercase;color:var(--cyan);
+    margin-bottom:32px;display:flex;align-items:center;gap:12px;
+    opacity:0;animation:fade-up 0.8s 0.2s forwards;
+  }
+  .vision-tag::before{content:'';width:24px;height:1px;background:var(--cyan);}
+  .vision-title {
+    font-size:clamp(42px,7vw,88px);font-weight:800;
+    line-height:0.95;letter-spacing:-0.03em;margin-bottom:32px;
+    opacity:0;animation:fade-up 0.9s 0.3s forwards;
+  }
+  .vision-title span{color:var(--cyan);}
+  .vision-lead {
+    font-family:'Lora',serif;font-size:clamp(18px,2vw,22px);
+    color:var(--muted-text);line-height:1.75;max-width:680px;
+    margin-bottom:48px;font-style:italic;
+    opacity:0;animation:fade-up 0.9s 0.5s forwards;
+  }
+  .vision-meta {
+    display:flex;gap:32px;align-items:center;padding:24px 0;
+    border-top:1px solid var(--border);border-bottom:1px solid var(--border);
+    opacity:0;animation:fade-up 0.9s 0.7s forwards;
+  }
+  .meta-item{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);}
+  .meta-item span{color:var(--cyan);display:block;margin-bottom:4px;}
+
+  /* CONTENT */
+  .vision-content {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 80px 48px 120px;
+    position: relative;
+    z-index: 2;
+  }
+
+  /* TOC */
+  .toc {
+    background:var(--deep);border:1px solid var(--border);
+    padding:32px 40px;margin-bottom:72px;
+  }
+  .toc-title {
+    font-family:'JetBrains Mono',monospace;font-size:10px;
+    letter-spacing:0.25em;text-transform:uppercase;color:var(--cyan);
+    margin-bottom:20px;
+  }
+  .toc-list{list-style:none;}
+  .toc-list li{
+    font-family:'JetBrains Mono',monospace;font-size:12px;
+    letter-spacing:0.05em;color:var(--muted);
+    padding:6px 0;border-bottom:1px solid rgba(0,229,255,0.06);
+    display:flex;gap:16px;align-items:baseline;
+    transition:color 0.2s;
+  }
+  .toc-list li:last-child{border-bottom:none;}
+  .toc-list li:hover{color:var(--white);}
+  .toc-list a{color:inherit;text-decoration:none;flex:1;}
+  .toc-list a:hover{color:var(--cyan);}
+  .toc-num{color:var(--cyan);opacity:0.5;min-width:24px;}
+
+  /* SECTIONS */
+  .doc-section{margin-bottom:80px;}
+  .doc-section-tag {
+    font-family:'JetBrains Mono',monospace;font-size:9px;
+    letter-spacing:0.3em;text-transform:uppercase;color:var(--cyan);
+    opacity:0.6;margin-bottom:16px;display:flex;align-items:center;gap:10px;
+  }
+  .doc-section-tag::before{content:'';width:20px;height:1px;background:var(--cyan);}
+  .doc-h2 {
+    font-size:clamp(28px,4vw,44px);font-weight:800;
+    line-height:1.1;letter-spacing:-0.02em;
+    margin-bottom:24px;color:var(--white);
+  }
+  .doc-h2 span{color:var(--cyan);}
+  .doc-p {
+    font-family:'Lora',serif;font-size:17px;
+    color:var(--muted-text);line-height:1.85;
+    margin-bottom:20px;
+  }
+  .doc-p strong{color:var(--white);font-family:'Syne',sans-serif;}
+
+  /* CALLOUT */
+  .callout {
+    border-left:2px solid var(--cyan);
+    padding:24px 32px;margin:40px 0;
+    background:var(--cyan-dim);
+    font-family:'Lora',serif;font-size:17px;
+    color:var(--white);line-height:1.75;font-style:italic;
+  }
+
+  /* STACK VISUAL */
+  .stack-visual{margin:48px 0;}
+  .stack-row {
+    display:grid;grid-template-columns:160px 1fr;
+    border:1px solid var(--border);margin-bottom:2px;
+    transition:border-color 0.2s;
+  }
+  .stack-row:hover{border-color:var(--border-hover);}
+  .stack-label {
+    padding:20px 24px;background:var(--deep);
+    border-right:1px solid var(--border);
+    font-family:'JetBrains Mono',monospace;font-size:10px;
+    letter-spacing:0.15em;text-transform:uppercase;color:var(--cyan);
+    display:flex;align-items:center;
+  }
+  .stack-value {
+    padding:20px 24px;font-size:14px;color:var(--muted-text);
+    display:flex;align-items:center;
+  }
+
+  /* DIVIDER */
+  .doc-divider {
+    border:none;border-top:1px solid var(--border);
+    margin:64px 0;
+    position:relative;
+  }
+  .doc-divider::before {
+    content:'◈';position:absolute;top:-10px;left:50%;
+    transform:translateX(-50%);background:var(--black);
+    padding:0 16px;color:var(--cyan);font-size:12px;opacity:0.5;
+  }
+
+  /* ROADMAP */
+  .roadmap{margin:48px 0;}
+  .roadmap-item {
+    display:grid;grid-template-columns:120px 1fr;
+    gap:0;margin-bottom:2px;
+    border:1px solid var(--border);
+    transition:border-color 0.3s;overflow:hidden;
+  }
+  .roadmap-item:hover{border-color:var(--border-hover);}
+  .roadmap-phase {
+    background:var(--deep);padding:24px;
+    font-family:'JetBrains Mono',monospace;font-size:10px;
+    letter-spacing:0.15em;text-transform:uppercase;
+    color:var(--cyan);border-right:1px solid var(--border);
+    display:flex;align-items:center;
+  }
+  .roadmap-content{padding:24px 32px;}
+  .roadmap-title{font-size:16px;font-weight:700;margin-bottom:6px;}
+  .roadmap-desc{font-size:13px;color:var(--muted);line-height:1.6;}
+
+  /* CTA BOTTOM */
+  .vision-cta {
+    text-align:center;padding:80px 48px;
+    border-top:1px solid var(--border);
+    background:var(--deep);
+    position:relative;z-index:2;
+  }
+  .vision-cta h2{font-size:clamp(32px,5vw,56px);font-weight:800;letter-spacing:-0.02em;margin-bottom:16px;}
+  .vision-cta p{font-size:16px;color:var(--muted);max-width:480px;margin:0 auto 40px;line-height:1.7;}
+  .btn-primary {
+    background:var(--cyan);color:var(--black);border:none;
+    padding:16px 40px;font-family:'Syne',sans-serif;
+    font-size:15px;font-weight:700;letter-spacing:0.05em;
+    cursor:none;transition:box-shadow 0.3s,opacity 0.2s;
+    text-decoration:none;display:inline-block;
+  }
+  .btn-primary:hover{box-shadow:0 0 40px var(--cyan-glow);opacity:0.9;}
+
+  /* FOOTER */
+  footer {
+    padding:40px 48px;display:flex;align-items:center;
+    justify-content:space-between;border-top:1px solid var(--border);
+    position:relative;z-index:2;
+  }
+  .footer-logo{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.15em;color:var(--muted);}
+  .footer-links{display:flex;gap:32px;list-style:none;}
+  .footer-links a{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color 0.2s;}
+  .footer-links a:hover{color:var(--cyan);}
+  .footer-copy{font-family:'JetBrains Mono',monospace;font-size:10px;color:rgba(240,246,255,0.2);letter-spacing:0.1em;}
+
+  @keyframes fade-up{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+  .reveal{opacity:0;transform:translateY(28px);transition:opacity 0.8s ease,transform 0.8s ease;}
+  .reveal.visible{opacity:1;transform:translateY(0);}
+
+  @media(max-width:768px){
+    nav{padding:20px 24px;}
+    .vision-hero{padding:120px 24px 60px;}
+    .vision-content{padding:60px 24px 80px;}
+    .stack-row,.roadmap-item{grid-template-columns:1fr;}
+    .stack-label,.roadmap-phase{border-right:none;border-bottom:1px solid var(--border);}
+    footer{flex-direction:column;gap:20px;text-align:center;}
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="/" class="logo">
+    <div class="logo-mark"></div>
+    AI — CHAIN
+  </a>
+  <a href="/" class="nav-back">← Back to Home</a>
+  <a href="/#early" class="nav-cta">Join Waitlist</a>
+</nav>
+
+<!-- HERO -->
+<div class="vision-hero">
+  <div class="vision-tag">Vision Document</div>
+  <h1 class="vision-title">Identity for<br>the <span>AI Age.</span></h1>
+  <p class="vision-lead">
+    "Before a mind can transact, it must exist. Before it can be trusted, it must be known. AIChain is where existence begins — for humans and AI alike."
+  </p>
+  <div class="vision-meta">
+    <div class="meta-item"><span>Project</span>AIChain — Alkebuleum Identity Chain</div>
+    <div class="meta-item"><span>Version</span>v1.0 — Vision Document</div>
+    <div class="meta-item"><span>Status</span>Pre-Testnet</div>
+    <div class="meta-item"><span>Chain</span>EVM Compatible</div>
+  </div>
+</div>
+
+<!-- CONTENT -->
+<div class="vision-content">
+
+  <!-- TOC -->
+  <div class="toc reveal">
+    <div class="toc-title">Contents</div>
+    <ul class="toc-list">
+      <li><span class="toc-num">01</span><a href="#problem">The Problem Nobody Is Solving</a></li>
+      <li><span class="toc-num">02</span><a href="#insight">The Core Insight</a></li>
+      <li><span class="toc-num">03</span><a href="#what">What AIChain Is</a></li>
+      <li><span class="toc-num">04</span><a href="#architecture">Architecture</a></li>
+      <li><span class="toc-num">05</span><a href="#storage">AI-Native Storage</a></li>
+      <li><span class="toc-num">06</span><a href="#ecosystem">The Alkebuleum Ecosystem</a></li>
+      <li><span class="toc-num">07</span><a href="#roadmap">Roadmap</a></li>
+      <li><span class="toc-num">08</span><a href="#closing">The Invitation</a></li>
+    </ul>
+  </div>
+
+  <!-- 01 -->
+  <div class="doc-section reveal" id="problem">
+    <div class="doc-section-tag">01 / The Problem</div>
+    <h2 class="doc-h2">Nobody knows<br>who the <span>AI is.</span></h2>
+    <p class="doc-p">
+      AI agents are proliferating at a pace the infrastructure world hasn't caught up to. They browse the web, send emails, execute trades, manage files, and interact with services on behalf of humans. They will soon do far more. And yet at the protocol level, they are <strong>nobody</strong>.
+    </p>
+    <p class="doc-p">
+      No verified existence. No portable identity. No on-chain record of who they are, who owns them, what they're authorized to do, or what they've done. When an AI agent takes an action in the world, there is no cryptographic proof of its identity — no way to verify, audit, or trust it independently of the platform that deployed it.
+    </p>
+    <div class="callout">
+      "We are building an economy of autonomous AI agents on top of an identity infrastructure designed for none of them."
+    </div>
+    <p class="doc-p">
+      Existing blockchains treat AI as an application-layer concern — something you bolt on top of general-purpose infrastructure. The result is a patchwork: AI agents pretending to be human wallets, centralized identity platforms with no on-chain enforceability, and protocols that can't distinguish a human from a bot from a billion-parameter model acting autonomously in the world.
+    </p>
+    <p class="doc-p">
+      This isn't a gap in existing solutions. It's a <strong>missing primitive</strong> — one that needs to be built at the chain level, not patched onto something else.
+    </p>
+  </div>
+
+  <hr class="doc-divider">
+
+  <!-- 02 -->
+  <div class="doc-section reveal" id="insight">
+    <div class="doc-section-tag">02 / The Core Insight</div>
+    <h2 class="doc-h2">Identity is the<br><span>root primitive.</span></h2>
+    <p class="doc-p">
+      Every meaningful action in a decentralized system flows from a verified identity. Transactions require a sender. Contracts require signatories. Trust requires provenance. Authorization requires a known subject. Before any of this can happen — <strong>existence must be established</strong>.
+    </p>
+    <p class="doc-p">
+      Most blockchains skip over this. They assume identity is handled elsewhere and focus on what comes after: transactions, contracts, tokens. But in a world where both humans and AI agents are economic actors, the absence of a shared identity layer at the protocol level creates compounding problems at every layer above it.
+    </p>
+    <div class="callout">
+      "If we want AI agents to participate in decentralized economies as trusted counterparties — not just tools — they need the same foundational infrastructure as humans: verifiable existence, on-chain identity, owned credentials."
+    </div>
+    <p class="doc-p">
+      AIChain starts from this conviction and builds upward. Not from transactions. Not from tokens. From identity — for everyone.
+    </p>
+  </div>
+
+  <hr class="doc-divider">
+
+  <!-- 03 -->
+  <div class="doc-section reveal" id="what">
+    <div class="doc-section-tag">03 / What AIChain Is</div>
+    <h2 class="doc-h2">One chain.<br><span>One purpose.</span></h2>
+    <p class="doc-p">
+      AIChain — Alkebuleum Identity Chain — is an application-specific blockchain purpose-built for identity. Not general-purpose. Not trying to compete with Ethereum on its own terms. Carved from a single intention: <strong>to be the definitive identity layer for humans and AI agents</strong> in the decentralized web.
+    </p>
+    <p class="doc-p">
+      It is EVM-compatible, meaning every tool, wallet, and contract in the Ethereum ecosystem works natively. It is crosschain-ready, meaning identities registered on AIChain are portable and usable across any EVM-compatible chain without friction. And it is optimized — lighter, faster, and cheaper to operate than a general-purpose chain precisely because it does one thing exceptionally well.
+    </p>
+    <p class="doc-p">
+      V1 scope is intentionally tight: <strong>identity registration, identity storage, AI agent credentials, and personal data/model storage</strong>. No DEX. No DeFi. No noise. Everything else is built on top or handled by Alkebuleum — the general-purpose chain in the same ecosystem. AIChain and Alkebuleum communicate natively, giving developers the full power of both without the complexity of managing two separate toolsets.
+    </p>
+  </div>
+
+  <hr class="doc-divider">
+
+  <!-- 04 -->
+  <div class="doc-section reveal" id="architecture">
+    <div class="doc-section-tag">04 / Architecture</div>
+    <h2 class="doc-h2">Five layers.<br><span>One stack.</span></h2>
+    <p class="doc-p">
+      The full Alkebuleum ecosystem is designed as a coherent stack where every layer has a single clear responsibility. AIChain occupies the identity layer — the second layer from the top, the most foundational after the application surface itself.
+    </p>
+    <div class="stack-visual">
+      <div class="stack-row">
+        <div class="stack-label">Application</div>
+        <div class="stack-value">Nuru AI · JollofSwap · Enterprise dApps · AI Agent Interfaces</div>
+      </div>
+      <div class="stack-row">
+        <div class="stack-label" style="color:var(--cyan);font-weight:700;">Identity ★</div>
+        <div class="stack-value" style="color:var(--white);">AIChain — Human DID · AI Agent DID · Credentials · Storage · Model Vault</div>
+      </div>
+      <div class="stack-row">
+        <div class="stack-label">Execution</div>
+        <div class="stack-value">Alkebuleum — EVM · Smart Contracts · ALKE Token · General dApps</div>
+      </div>
+      <div class="stack-row">
+        <div class="stack-label">Wallet</div>
+        <div class="stack-value">AmVault SDK — EIP-1193 · Batch Transactions · Crosschain Auth · Message Signing</div>
+      </div>
+      <div class="stack-row">
+        <div class="stack-label">Bridge</div>
+        <div class="stack-value">Ethereum · Base · Arbitrum · Polygon · Any EVM Chain</div>
+      </div>
+    </div>
+    <p class="doc-p">
+      The key design decision: AIChain and Alkebuleum are <strong>separate chains with a native bridge</strong>. Identities verified on AIChain authorize actions on Alkebuleum. An AI agent with an AIChain identity can interact with JollofSwap on Alkebuleum. AmVault abstracts this crosschain identity handshake — developers don't need to think about which chain they're on. The identity just works.
+    </p>
+  </div>
+
+  <hr class="doc-divider">
+
+  <!-- 05 -->
+  <div class="doc-section reveal" id="storage">
+    <div class="doc-section-tag">05 / AI-Native Storage</div>
+    <h2 class="doc-h2">Your model.<br><span>Your chain.</span></h2>
+    <p class="doc-p">
+      Storage is the second foundational primitive after identity. AI agents need to store and retrieve data constantly — model outputs, conversation history, decision logs, identity credentials. Today, all of this lives on servers owned by AI companies. It is not yours.
+    </p>
+    <p class="doc-p">
+      AIChain's storage layer changes this. On-chain, we store the content hash, ownership record, access permissions, and metadata. Off-chain, actual data lives in a distributed network of incentivized storage nodes. Together they behave like a cloud drive — but <strong>ownership is enforced by smart contract, not corporate terms of service</strong>.
+    </p>
+    <p class="doc-p">
+      More significantly: user-specific AI model components — fine-tuned adapters, personalization layers, agent configurations, knowledge bases — can be stored on AIChain as <strong>owned on-chain assets</strong>. Your fine-tuned model becomes as ownable, transferable, and licensable as any other digital asset. An AI agent's intelligence becomes part of its on-chain identity.
+    </p>
+    <div class="callout">
+      "The future is not one AI for everyone. It is a personalized model for every person, owned by them, stored by them, governed by them. AIChain is the infrastructure that makes that possible."
+    </div>
+  </div>
+
+  <hr class="doc-divider">
+
+  <!-- 06 -->
+  <div class="doc-section reveal" id="ecosystem">
+    <div class="doc-section-tag">06 / The Ecosystem</div>
+    <h2 class="doc-h2">Already<br><span>being built.</span></h2>
+    <p class="doc-p">
+      AIChain is not a whitepaper with nothing behind it. It is the next layer of an ecosystem already under active development with multiple live components.
+    </p>
+    <p class="doc-p">
+      <strong>Nuru AI</strong> is the ecosystem's AI guide — a fully functional web application with Anthropic API integration, modular React components, and AmVault wallet authentication. It is the reference implementation of what an AI agent with AIChain identity looks like in practice.
+    </p>
+    <p class="doc-p">
+      <strong>AmVault SDK</strong> (amvault-connect) is a published npm package providing React-based wallet authentication and transaction capabilities with EIP-1193 compatibility. It is the identity wallet for both humans and AI agents across the ecosystem.
+    </p>
+    <p class="doc-p">
+      <strong>JollofSwap</strong> is the ecosystem's DEX, using Uniswap V2 mechanics on the Alkebuleum chain with ALKE, USDC, and MAH tokens. It is the first application where AI agents with AIChain identity can participate as verified trading counterparties.
+    </p>
+    <p class="doc-p">
+      <strong>Alkebuleum</strong> is the underlying general-purpose EVM chain — the execution and transaction layer on which dApps, DeFi, and the broader ecosystem operate. AIChain is its dedicated identity layer, purpose-built and tightly integrated.
+    </p>
+  </div>
+
+  <hr class="doc-divider">
+
+  <!-- 07 -->
+  <div class="doc-section reveal" id="roadmap">
+    <div class="doc-section-tag">07 / Roadmap</div>
+    <h2 class="doc-h2">Phased.<br><span>Purposeful.</span></h2>
+    <div class="roadmap">
+      <div class="roadmap-item">
+        <div class="roadmap-phase">Phase 0</div>
+        <div class="roadmap-content">
+          <div class="roadmap-title">Foundation — Now</div>
+          <div class="roadmap-desc">AIChain brand, domain, vision document, waitlist. Ecosystem components (Nuru AI, AmVault, JollofSwap) live. Community building begins.</div>
+        </div>
+      </div>
+      <div class="roadmap-item">
+        <div class="roadmap-phase">Phase 1</div>
+        <div class="roadmap-content">
+          <div class="roadmap-title">Testnet — V1</div>
+          <div class="roadmap-desc">AIChain testnet launch. Human and AI agent identity registration. Basic credential issuance. Storage layer v1. Bridge to Alkebuleum testnet. Genesis identity credentials for early builders.</div>
+        </div>
+      </div>
+      <div class="roadmap-item">
+        <div class="roadmap-phase">Phase 2</div>
+        <div class="roadmap-content">
+          <div class="roadmap-title">Mainnet — V1</div>
+          <div class="roadmap-desc">AIChain mainnet. AmVault integrated identity wallet. Crosschain identity usable on Alkebuleum mainnet. Developer SDK. First enterprise identity partnerships.</div>
+        </div>
+      </div>
+      <div class="roadmap-item">
+        <div class="roadmap-phase">Phase 3</div>
+        <div class="roadmap-content">
+          <div class="roadmap-title">Storage & Models</div>
+          <div class="roadmap-desc">Full storage layer. AI model vault — own your fine-tuned models on-chain. Agent memory persistence. Cross-chain identity to Ethereum, Base, Arbitrum.</div>
+        </div>
+      </div>
+      <div class="roadmap-item">
+        <div class="roadmap-phase">Phase 4</div>
+        <div class="roadmap-content">
+          <div class="roadmap-title">Progressive Decentralization</div>
+          <div class="roadmap-desc">Governance layer. Community validators. AI-native consensus improvements. Open identity standard proposal for broader EVM ecosystem adoption.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="doc-divider">
+
+  <!-- 08 -->
+  <div class="doc-section reveal" id="closing">
+    <div class="doc-section-tag">08 / The Invitation</div>
+    <h2 class="doc-h2">Build on the<br><span>identity chain.</span></h2>
+    <p class="doc-p">
+      The next decade of computing will be defined by the relationship between human intelligence and artificial intelligence. The infrastructure we build now — the identity primitives, the ownership models, the trust mechanisms — will shape whether that relationship is one of sovereignty or dependency.
+    </p>
+    <p class="doc-p">
+      AIChain is built on the conviction that both humans and AI deserve verifiable existence, owned identity, and the ability to participate in decentralized systems on equal footing. Not as a feature. As a <strong>protocol-level guarantee</strong>.
+    </p>
+    <p class="doc-p">
+      We are looking for builders, researchers, and organizations who believe the same. If you want to be among the first to build on AIChain — to receive genesis identity credentials, participate in testnet, or collaborate on the protocol — join the waitlist and reach out directly.
+    </p>
+    <div class="callout">
+      "The identity chain for humans and AI is not a product. It is infrastructure. And infrastructure, built right, outlasts everything built on top of it."
+    </div>
+  </div>
+
+</div>
+
+<!-- BOTTOM CTA -->
+<div class="vision-cta reveal">
+  <h2>Ready to build?</h2>
+  <p>Join the waitlist for early access, builder grants, and genesis identity credentials on AIChain.</p>
+  <a href="/#early" class="btn-primary">Join the Waitlist</a>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">AI — CHAIN &nbsp;·&nbsp; ai-chain.org</div>
+  <ul class="footer-links">
+    <li><a href="/">Home</a></li>
+    <li><a href="#">GitHub</a></li>
+    <li><a href="#">Twitter</a></li>
+    <li><a href="#">Discord</a></li>
+  </ul>
+  <div class="footer-copy">© 2025 AIChain — Alkebuleum Identity Chain</div>
+</footer>
+
+<script>
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  let mx=0,my=0,rx=0,ry=0;
+  document.addEventListener('mousemove',e=>{
+    mx=e.clientX;my=e.clientY;
+    cursor.style.left=mx-4+'px';cursor.style.top=my-4+'px';
+  });
+  function animateRing(){
+    rx+=(mx-rx-16)*0.12;ry+=(my-ry-16)*0.12;
+    ring.style.left=rx+'px';ring.style.top=ry+'px';
+    requestAnimationFrame(animateRing);
+  }
+  animateRing();
+  document.querySelectorAll('button,a,input').forEach(el=>{
+    el.addEventListener('mouseenter',()=>{ring.style.width='48px';ring.style.height='48px';ring.style.opacity='0.6';});
+    el.addEventListener('mouseleave',()=>{ring.style.width='32px';ring.style.height='32px';ring.style.opacity='1';});
+  });
+  const observer=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');observer.unobserve(e.target);}});
+  },{threshold:0.1});
+  document.querySelectorAll('.reveal').forEach(r=>observer.observe(r));
+</script>
+</body>
+</html>
